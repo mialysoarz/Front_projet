@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistique Démographique - Bar Chart</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="search-bar">
+                <input type="text" placeholder="Search">
+                <i class="fas fa-search"></i>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="index.html" class="active"><i class="fas fa-chart-pie"></i> Statistique demographique</a></li>
+                    <li><a href="#"><i class="fas fa-ticket-alt"></i> Statistique d'abonnement</a></li>
+                    <li><a href="#"><i class="fas fa-check-circle"></i> Suivi de presence</a></li>
+                    <li><a href="#"><i class="fas fa-users"></i> Suivi de personnels</a></li>
+                    <li><a href="#"><i class="fas fa-sitemap"></i> Suivi de clubs et groupes</a></li>
+                    <li><a href="#"><i class="fas fa-tags"></i> Gestion tarifs</a></li>
+                    <li><a href="#"><i class="fas fa-calendar-alt"></i> Reservation</a></li>
+                    <li><a href="#"><i class="fas fa-clock"></i> Emploi du temps</a></li>
+                    <li><a href="#"><i class="fas fa-list-alt"></i> Liste professeur/eleve + fiche individuelle</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <div class="main-content">
+            <header class="header">
+                <button class="admin-btn"><i class="fas fa-user-shield"></i> Admin</button>
+            </header>
+            <main class="dashboard">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="total-clients">
+                            <span>56</span>
+                            Total client
+                        </div>
+                        <div class="date-range">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Jun 17, 2024</span>
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Jun 22, 2025</span>
+                        </div>
+                        <div class="legend">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: var(--accent-color-1);"></div>
+                                <span>Homme</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: var(--accent-color-2);"></div>
+                                <span>Femme</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-area">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const ctxBar = document.getElementById('barChart').getContext('2d');
+        const barChart = new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['10-12', '16-18', '20-30', '30-40', '40-60'],
+                datasets: [{
+                    label: 'Homme',
+                    data: [20, 15, 35, 8, 12],
+                    backgroundColor: '#4db6ac'
+                }, {
+                    label: 'Femme',
+                    data: [28, 12, 20, 25, 15],
+                    backgroundColor: '#80deea'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#e0e0e0'
+                        },
+                        grid: {
+                            color: '#5a6e7e'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: '#e0e0e0'
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

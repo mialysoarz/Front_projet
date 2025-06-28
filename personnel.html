@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suivi de Personnel</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="search-bar">
+                <input type="text" placeholder="Search">
+                <i class="fas fa-search"></i>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-chart-pie"></i> Statistique demographique</a></li>
+                    <li><a href="abonnement.html"><i class="fas fa-ticket-alt"></i> Statistique d'abonnement</a></li>
+                    <li><a href="presence.html"><i class="fas fa-check-circle"></i> Suivi de presence</a></li>
+                    <li><a href="personnel.html" class="active"><i class="fas fa-users"></i> Suivi de personnels</a></li>
+                    <li><a href="clubs.html"><i class="fas fa-sitemap"></i> Suivi de clubs et groupes</a></li>
+                    <li><a href="tarif.html"><i class="fas fa-tags"></i> Gestion tarifs</a></li>                    <li><a href="#"><i class="fas fa-calendar-alt"></i> Reservation</a></li>
+                    <li><a href="emploi-temps.html"><i class="fas fa-clock"></i> Emploi du temps</a></li>
+                    <li><a href="#"><i class="fas fa-list-alt"></i> Liste professeur/eleve + fiche individuelle</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <div class="main-content">
+            <header class="header">
+                <button class="admin-btn" onclick="switchToSupervisor()"><i class="fas fa-user-shield"></i> Admin</button>
+            </header>
+            <main class="dashboard">
+                <div class="personnel-dashboard">
+                    <!-- Header avec choix du type -->
+                    <div class="personnel-header">
+                        <div class="personnel-title">
+                            <h2>Suivi de Personnel</h2>
+                        </div>
+                        <div class="staff-type-selector">
+                            <button class="staff-type-btn active" data-type="professeur">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                                Professeur
+                            </button>
+                            <button class="staff-type-btn" data-type="superviseur">
+                                <i class="fas fa-user-tie"></i>
+                                Superviseur
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Contenu principal -->
+                    <div class="personnel-content">
+                        <!-- Liste du personnel -->
+                        <div class="staff-list">
+                            <div class="list-header">
+                                <h3 id="staff-list-title">Liste des Professeurs</h3>
+                                <div class="list-actions">
+                                    <button class="add-staff-btn" onclick="showAddForm()">
+                                        <i class="fas fa-plus"></i>
+                                        Ajouter
+                                    </button>
+                                    <div class="total-count">
+                                        <span id="total-staff">8</span> personnes
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="staff-items">
+                                <div class="staff-item active" data-id="1" data-type="professeur">
+                                    <div class="staff-info">
+                                        <div class="staff-name">Sensei Tanaka Hiroshi</div>
+                                        <div class="staff-details">
+                                            <span class="contact">+261 34 12 345 67</span>
+                                            <span class="gender">Homme</span>
+                                            <span class="discipline">Judo</span>
+                                        </div>
+                                        <div class="staff-address">123 Rue des Arts Martiaux, Antananarivo</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="staff-item" data-id="2" data-type="professeur">
+                                    <div class="staff-info">
+                                        <div class="staff-name">Maître Rodriguez Carlos</div>
+                                        <div class="staff-details">
+                                            <span class="contact">+261 33 98 765 43</span>
+                                            <span class="gender">Homme</span>
+                                            <span class="discipline">Self Defense</span>
+                                        </div>
+                                        <div class="staff-address">456 Avenue de la Défense, Antananarivo</div>
+                                    </div>
+                                </div>
+
+                                <div class="staff-item" data-id="3" data-type="professeur">
+                                    <div class="staff-info">
+                                        <div class="staff-name">Sensei Yamamoto Keiko</div>
+                                        <div class="staff-details">
+                                            <span class="contact">+261 32 55 123 89</span>
+                                            <span class="gender">Femme</span>
+                                            <span class="discipline">Aikido</span>
+                                        </div>
+                                        <div class="staff-address">789 Boulevard du Bushido, Antananarivo</div>
+                                    </div>
+                                </div>
+
+                                <div class="staff-item" data-id="4" data-type="professeur">
+                                    <div class="staff-info">
+                                        <div class="staff-name">Professeur Silva Ana</div>
+                                        <div class="staff-details">
+                                            <span class="contact">+261 34 77 234 56</span>
+                                            <span class="gender">Femme</span>
+                                            <span class="discipline">Jujitsu</span>
+                                        </div>
+                                        <div class="staff-address">321 Rue du Combat, Antananarivo</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Formulaire CRUD -->
+                        <div class="staff-crud">
+                            <div class="crud-header">
+                                <h3 id="crud-title">Détails du Personnel</h3>
+                                <div class="crud-actions">
+                                    <button class="edit-btn" onclick="enableEdit()" id="editBtn">
+                                        <i class="fas fa-edit"></i>
+                                        Modifier
+                                    </button>
+                                    <button class="delete-btn" onclick="deleteStaff()" id="deleteBtn">
+                                        <i class="fas fa-trash"></i>
+                                        Supprimer
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="crud-content">
+                                <form id="staffForm" class="staff-form">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="firstName">Prénom</label>
+                                            <input type="text" id="firstName" name="firstName" value="Hiroshi" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="lastName">Nom</label>
+                                            <input type="text" id="lastName" name="lastName" value="Tanaka" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="contact">Contact</label>
+                                            <input type="tel" id="contact" name="contact" value="+261 34 12 345 67" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="gender">Sexe</label>
+                                            <select id="gender" name="gender" disabled>
+                                                <option value="Homme" selected>Homme</option>
+                                                <option value="Femme">Femme</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group discipline-group">
+                                        <label for="discipline">Discipline</label>
+                                        <select id="discipline" name="discipline" disabled>
+                                            <option value="Judo" selected>Judo</option>
+                                            <option value="Aikido">Aikido</option>
+                                            <option value="Jujitsu">Jujitsu</option>
+                                            <option value="Self Defense">Self Defense</option>
+                                            <option value="Karate">Karate</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="address">Adresse</label>
+                                        <textarea id="address" name="address" rows="3" disabled>123 Rue des Arts Martiaux, Antananarivo</textarea>
+                                    </div>
+
+                                    <div class="form-actions" style="display: none;">
+                                        <button type="button" class="save-btn" onclick="saveStaff()">
+                                            <i class="fas fa-save"></i>
+                                            Enregistrer
+                                        </button>
+                                        <button type="button" class="cancel-btn" onclick="cancelEdit()">
+                                            <i class="fas fa-times"></i>
+                                            Annuler
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal pour ajouter un nouveau personnel -->
+    <div id="addStaffModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Ajouter un nouveau membre du personnel</h3>
+                <span class="close" onclick="closeAddModal()">&times;</span>
+            </div>
+            <form id="addStaffForm" class="staff-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="addFirstName">Prénom</label>
+                        <input type="text" id="addFirstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addLastName">Nom</label>
+                        <input type="text" id="addLastName" name="lastName" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="addContact">Contact</label>
+                        <input type="tel" id="addContact" name="contact" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addGender">Sexe</label>
+                        <select id="addGender" name="gender" required>
+                            <option value="">Sélectionner</option>
+                            <option value="Homme">Homme</option>
+                            <option value="Femme">Femme</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="addType">Type</label>
+                    <select id="addType" name="type" required>
+                        <option value="">Sélectionner</option>
+                        <option value="professeur">Professeur</option>
+                        <option value="superviseur">Superviseur</option>
+                    </select>
+                </div>
+
+                <div class="form-group discipline-group" id="addDisciplineGroup">
+                    <label for="addDiscipline">Discipline</label>
+                    <select id="addDiscipline" name="discipline">
+                        <option value="">Sélectionner</option>
+                        <option value="Judo">Judo</option>
+                        <option value="Aikido">Aikido</option>
+                        <option value="Jujitsu">Jujitsu</option>
+                        <option value="Self Defense">Self Defense</option>
+                        <option value="Karate">Karate</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="addAddress">Adresse</label>
+                    <textarea id="addAddress" name="address" rows="3" required></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="submit" class="save-btn">
+                        <i class="fas fa-save"></i>
+                        Ajouter
+                    </button>
+                    <button type="button" class="cancel-btn" onclick="closeAddModal()">
+                        <i class="fas fa-times"></i>
+                        Annuler
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentStaffId = 1;
+        let isEditing = false;
+        let staffData = [
+            {
+                id: 1,
+                type: 'professeur',
+                firstName: 'Hiroshi',
+                lastName: 'Tanaka',
+                contact: '+261 34 12 345 67',
+                gender: 'Homme',
+                discipline: 'Judo',
+                address: '123 Rue des Arts Martiaux, Antananarivo'
+            },
+            {
+                id: 2,
+                type: 'professeur',
+                firstName: 'Carlos',
+                lastName: 'Rodriguez',
+                contact: '+261 33 98 765 43',
+                gender: 'Homme',
+                discipline: 'Self Defense',
+                address: '456 Avenue de la Défense, Antananarivo'
+            },
+            {
+                id: 3,
+                type: 'professeur',
+                firstName: 'Keiko',
+                lastName: 'Yamamoto',
+                contact: '+261 32 55 123 89',
+                gender: 'Femme',
+                discipline: 'Aikido',
+                address: '789 Boulevard du Bushido, Antananarivo'
+            },
+            {
+                id: 4,
+                type: 'professeur',
+                firstName: 'Ana',
+                lastName: 'Silva',
+                contact: '+261 34 77 234 56',
+                gender: 'Femme',
+                discipline: 'Jujitsu',
+                address: '321 Rue du Combat, Antananarivo'
+            },
+            {
+                id: 5,
+                type: 'superviseur',
+                firstName: 'Jean',
+                lastName: 'Rakoto',
+                contact: '+261 33 44 567 89',
+                gender: 'Homme',
+                discipline: '',
+                address: '789 Rue de la Surveillance, Antananarivo'
+            },
+            {
+                id: 6,
+                type: 'superviseur',
+                firstName: 'Marie',
+                lastName: 'Andrianina',
+                contact: '+261 34 88 123 45',
+                gender: 'Femme',
+                discipline: '',
+                address: '456 Avenue du Contrôle, Antananarivo'
+            }
+        ];
+
+        // Gestion des boutons de type de personnel
+        const staffTypeBtns = document.querySelectorAll('.staff-type-btn');
+        const staffListTitle = document.getElementById('staff-list-title');
+        const staffItems = document.querySelector('.staff-items');
+
+        staffTypeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                staffTypeBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const type = btn.dataset.type;
+                updateListForType(type);
+                loadStaffList(type);
+            });
+        });
+
+        function updateListForType(type) {
+            switch(type) {
+                case 'professeur':
+                    staffListTitle.textContent = 'Liste des Professeurs';
+                    document.querySelector('.discipline-group').style.display = 'block';
+                    break;
+                case 'superviseur':
+                    staffListTitle.textContent = 'Liste des Superviseurs';
+                    document.querySelector('.discipline-group').style.display = 'none';
+                    break;
+            }
+        }
+
+        function loadStaffList(type) {
+            const filteredStaff = staffData.filter(staff => staff.type === type);
+            const staffItemsContainer = document.querySelector('.staff-items');
+            
+            staffItemsContainer.innerHTML = '';
+            
+            filteredStaff.forEach((staff, index) => {
+                const staffItem = document.createElement('div');
+                staffItem.className = `staff-item ${index === 0 ? 'active' : ''}`;
+                staffItem.dataset.id = staff.id;
+                staffItem.dataset.type = staff.type;
+                
+                const disciplineHtml = staff.discipline ? `<span class="discipline">${staff.discipline}</span>` : '';
+                
+                staffItem.innerHTML = `
+                    <div class="staff-info">
+                        <div class="staff-name">${staff.firstName} ${staff.lastName}</div>
+                        <div class="staff-details">
+                            <span class="contact">${staff.contact}</span>
+                            <span class="gender">${staff.gender}</span>
+                            ${disciplineHtml}
+                        </div>
+                        <div class="staff-address">${staff.address}</div>
+                    </div>
+                `;
+                
+                staffItem.addEventListener('click', () => selectStaff(staff.id));
+                staffItemsContainer.appendChild(staffItem);
+            });
+            
+            document.getElementById('total-staff').textContent = filteredStaff.length;
+            
+            if (filteredStaff.length > 0) {
+                selectStaff(filteredStaff[0].id);
+            }
+        }
+
+        function selectStaff(id) {
+            const staff = staffData.find(s => s.id === id);
+            if (!staff) return;
+            
+            currentStaffId = id;
+            
+            // Update active item
+            document.querySelectorAll('.staff-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`[data-id="${id}"]`).classList.add('active');
+            
+            // Update form
+            document.getElementById('firstName').value = staff.firstName;
+            document.getElementById('lastName').value = staff.lastName;
+            document.getElementById('contact').value = staff.contact;
+            document.getElementById('gender').value = staff.gender;
+            document.getElementById('discipline').value = staff.discipline;
+            document.getElementById('address').value = staff.address;
+            
+            // Show/hide discipline field
+            const disciplineGroup = document.querySelector('.discipline-group');
+            disciplineGroup.style.display = staff.type === 'professeur' ? 'block' : 'none';
+        }
+
+        function enableEdit() {
+            isEditing = true;
+            const form = document.getElementById('staffForm');
+            const inputs = form.querySelectorAll('input, select, textarea');
+            
+            inputs.forEach(input => {
+                input.disabled = false;
+            });
+            
+            document.querySelector('.form-actions').style.display = 'flex';
+            document.querySelector('.crud-actions').style.display = 'none';
+        }
+
+        function cancelEdit() {
+            isEditing = false;
+            const form = document.getElementById('staffForm');
+            const inputs = form.querySelectorAll('input, select, textarea');
+            
+            inputs.forEach(input => {
+                input.disabled = true;
+            });
+            
+            document.querySelector('.form-actions').style.display = 'none';
+            document.querySelector('.crud-actions').style.display = 'flex';
+            
+            // Reload current staff data
+            selectStaff(currentStaffId);
+        }
+
+        function saveStaff() {
+            const staff = staffData.find(s => s.id === currentStaffId);
+            if (!staff) return;
+            
+            staff.firstName = document.getElementById('firstName').value;
+            staff.lastName = document.getElementById('lastName').value;
+            staff.contact = document.getElementById('contact').value;
+            staff.gender = document.getElementById('gender').value;
+            staff.discipline = document.getElementById('discipline').value;
+            staff.address = document.getElementById('address').value;
+            
+            cancelEdit();
+            
+            // Reload the list
+            const activeType = document.querySelector('.staff-type-btn.active').dataset.type;
+            loadStaffList(activeType);
+            
+            alert('Modifications enregistrées avec succès!');
+        }
+
+        function deleteStaff() {
+            if (confirm('Êtes-vous sûr de vouloir supprimer ce membre du personnel?')) {
+                staffData = staffData.filter(s => s.id !== currentStaffId);
+                
+                const activeType = document.querySelector('.staff-type-btn.active').dataset.type;
+                loadStaffList(activeType);
+                
+                alert('Personnel supprimé avec succès!');
+            }
+        }
+
+        function showAddForm() {
+            document.getElementById('addStaffModal').style.display = 'block';
+            document.getElementById('addStaffForm').reset();
+            
+            const activeType = document.querySelector('.staff-type-btn.active').dataset.type;
+            document.getElementById('addType').value = activeType;
+            toggleDisciplineField();
+        }
+
+        function closeAddModal() {
+            document.getElementById('addStaffModal').style.display = 'none';
+        }
+
+        function toggleDisciplineField() {
+            const type = document.getElementById('addType').value;
+            const disciplineGroup = document.getElementById('addDisciplineGroup');
+            const disciplineField = document.getElementById('addDiscipline');
+            
+            if (type === 'professeur') {
+                disciplineGroup.style.display = 'block';
+                disciplineField.required = true;
+            } else {
+                disciplineGroup.style.display = 'none';
+                disciplineField.required = false;
+                disciplineField.value = '';
+            }
+        }
+
+        // Event listeners
+        document.getElementById('addType').addEventListener('change', toggleDisciplineField);
+
+        document.getElementById('addStaffForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const newStaff = {
+                id: Math.max(...staffData.map(s => s.id)) + 1,
+                type: document.getElementById('addType').value,
+                firstName: document.getElementById('addFirstName').value,
+                lastName: document.getElementById('addLastName').value,
+                contact: document.getElementById('addContact').value,
+                gender: document.getElementById('addGender').value,
+                discipline: document.getElementById('addDiscipline').value,
+                address: document.getElementById('addAddress').value
+            };
+            
+            staffData.push(newStaff);
+            closeAddModal();
+            
+            const activeType = document.querySelector('.staff-type-btn.active').dataset.type;
+            loadStaffList(activeType);
+            
+            alert('Personnel ajouté avec succès!');
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('addStaffModal');
+            if (event.target === modal) {
+                closeAddModal();
+            }
+        }
+        // Initialize
+        loadStaffList('professeur');
+
+        // Fonction pour basculer vers Superviseur
+        function switchToSupervisor() {
+            window.location.href = 'suivi-materiel.html';
+        }
+    </script>
+</body>
+</html>

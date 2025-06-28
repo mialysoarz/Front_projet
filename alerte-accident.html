@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerte Accident</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="search-bar">
+                <input type="text" placeholder="Search">
+                <i class="fas fa-search"></i>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="suivi-materiel.html"><i class="fas fa-tools"></i> Suivi matériel et salle</a></li>
+                    <li><a href="alerte-accident.html" class="active"><i class="fas fa-exclamation-triangle"></i> Alerte accident</a></li>
+                    <li><a href="pointage-professeur.html"><i class="fas fa-user-check"></i> Pointage de professeur</a></li>
+                    <li><a href="inscription-eleves.html"><i class="fas fa-user-plus"></i> Inscription des élèves</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <div class="main-content">
+            <header class="header">
+                <button class="admin-btn" onclick="switchToAdmin()">
+                    <i class="fas fa-user-shield"></i> Superviseur
+                </button>
+            </header>
+            <main class="dashboard">
+                <div class="accident-dashboard">
+                    <h1>Alerte Accident</h1>
+                    
+                    <!-- Section des boutons de type -->
+                    <div class="type-selector">
+                        <button class="type-btn active" data-type="eleve" onclick="switchType('eleve')">
+                            <i class="fas fa-user-graduate"></i> Élève
+                        </button>
+                        <button class="type-btn" data-type="professeur" onclick="switchType('professeur')">
+                            <i class="fas fa-chalkboard-teacher"></i> Professeur
+                        </button>
+                        <div class="search-section">
+                            <div class="search-input-container">
+                                <input type="text" id="searchInput" placeholder="Rechercher une personne..." oninput="searchPerson()">
+                                <i class="fas fa-search"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Date du jour -->
+                    <div class="date-section">
+                        <div class="current-date">
+                            <i class="fas fa-calendar-day"></i>
+                            <span>Ce: <span id="currentDate"></span></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Container principal -->
+                    <div class="accident-container">
+                        <!-- Section Information -->
+                        <div class="information-section">
+                            <h2>Information</h2>
+                            <form class="accident-form" id="accidentForm">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Nom:</label>
+                                        <input type="text" id="nomInput" placeholder="Nom de la personne">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Prénom:</label>
+                                        <input type="text" id="prenomInput" placeholder="Prénom de la personne">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Cours:</label>
+                                    <input type="text" id="coursInput" placeholder="Nom du cours">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Description:</label>
+                                    <textarea id="descriptionInput" rows="4" placeholder="Description de l'accident ou de la blessure..."></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Assurance:</label>
+                                    <div class="checkbox-container">
+                                        <label class="checkbox-item">
+                                            <input type="radio" name="assurance" value="oui">
+                                            <span class="checkmark"></span>
+                                            Oui
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="radio" name="assurance" value="non">
+                                            <span class="checkmark"></span>
+                                            Non
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="submit-btn">
+                                    <i class="fas fa-save"></i> Enregistrer l'accident
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <!-- Section Résultats de recherche -->
+                        <div class="search-results-section">
+                            <h2>Liste de résultat selon la recherche "<span id="searchTerm">Robert</span>"</h2>
+                            <div class="results-list" id="resultsList">
+                                <!-- Les résultats seront générés dynamiquement -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Données simulées
+        const personnesData = {
+            eleve: [
+                { nom: "Emmerick", prenom: "Roger", cours: "Karaté Débutant" },
+                { nom: "Charles", prenom: "Roberty", cours: "Judo Intermédiaire" },
+                { nom: "Martin", prenom: "Robert", cours: "Self Defense Avancé" },
+                { nom: "Dubois", prenom: "Roberto", cours: "Boxe Française" },
+                { nom: "Robert", prenom: "Jimmy", cours: "Self Defense Avancé" },
+                { nom: "Smith", prenom: "Robinson", cours: "MMA Débutant" }
+            ],
+            professeur: [
+                { nom: "Robert", prenom: "Antoine", cours: "Karaté" },
+                { nom: "Roberta", prenom: "Marie", cours: "Judo" },
+                { nom: "Robertson", prenom: "Pierre", cours: "Self Defense" },
+                { nom: "Roberts", prenom: "Jean", cours: "Boxe" }
+            ]
+        };
+
+        let currentType = 'eleve';
+        let currentSearch = 'Robert';
+
+        // Initialiser la date
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            document.getElementById('currentDate').textContent = today.toLocaleDateString('fr-FR', options);
+            
+            // Initialiser avec "Robert"
+            document.getElementById('searchInput').value = 'Robert';
+            searchPerson();
+        });
+
+        // Fonction pour changer de type (élève/professeur)
+        function switchType(type) {
+            currentType = type;
+            
+            // Mettre à jour les boutons
+            document.querySelectorAll('.type-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-type="${type}"]`).classList.add('active');
+            
+            // Refaire la recherche
+            searchPerson();
+        }
+
+        // Fonction de recherche
+        function searchPerson() {
+            const searchValue = document.getElementById('searchInput').value.toLowerCase();
+            currentSearch = searchValue || 'Robert';
+            
+            // Mettre à jour le terme de recherche affiché
+            document.getElementById('searchTerm').textContent = currentSearch;
+            
+            // Filtrer les personnes
+            const personnes = personnesData[currentType];
+            const results = personnes.filter(personne => 
+                personne.nom.toLowerCase().includes(currentSearch) || 
+                personne.prenom.toLowerCase().includes(currentSearch)
+            );
+            
+            // Afficher les résultats
+            displayResults(results);
+        }
+
+        // Fonction pour afficher les résultats
+        function displayResults(results) {
+            const resultsList = document.getElementById('resultsList');
+            resultsList.innerHTML = '';
+            
+            if (results.length === 0) {
+                resultsList.innerHTML = '<div class="no-results">Aucun résultat trouvé</div>';
+                return;
+            }
+            
+            results.forEach(personne => {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                resultItem.onclick = () => selectPerson(personne);
+                
+                // Mettre en évidence le terme recherché
+                const nomHighlighted = highlightText(personne.nom, currentSearch);
+                const prenomHighlighted = highlightText(personne.prenom, currentSearch);
+                
+                resultItem.innerHTML = `
+                    <div class="person-info">
+                        <div class="person-name">${prenomHighlighted} ${nomHighlighted}</div>
+                        <div class="person-course">${personne.cours}</div>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                `;
+                
+                resultsList.appendChild(resultItem);
+            });
+        }
+
+        // Fonction pour mettre en évidence le texte recherché
+        function highlightText(text, search) {
+            if (!search) return text;
+            
+            const regex = new RegExp(`(${search})`, 'gi');
+            return text.replace(regex, '<span class="highlight">"$1"</span>');
+        }
+
+        // Fonction pour sélectionner une personne
+        function selectPerson(personne) {
+            document.getElementById('nomInput').value = personne.nom;
+            document.getElementById('prenomInput').value = personne.prenom;
+            document.getElementById('coursInput').value = personne.cours;
+            
+            // Ajouter un effet visuel pour indiquer la sélection
+            document.querySelectorAll('.result-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+        }
+
+        // Gestionnaire de soumission du formulaire
+        document.getElementById('accidentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                nom: document.getElementById('nomInput').value,
+                prenom: document.getElementById('prenomInput').value,
+                cours: document.getElementById('coursInput').value,
+                description: document.getElementById('descriptionInput').value,
+                assurance: document.querySelector('input[name="assurance"]:checked')?.value,
+                type: currentType,
+                date: new Date().toISOString()
+            };
+            
+            if (!formData.nom || !formData.prenom || !formData.description) {
+                alert('Veuillez remplir tous les champs obligatoires (Nom, Prénom, Description).');
+                return;
+            }
+            
+            // Simulation de l'enregistrement
+            alert(`Accident enregistré avec succès !\n\nPersonne: ${formData.prenom} ${formData.nom}\nType: ${formData.type}\nCours: ${formData.cours}\nAssurance: ${formData.assurance || 'Non spécifié'}`);
+            
+            // Réinitialiser le formulaire
+            this.reset();
+        });
+
+        // Fonction pour basculer vers Admin
+        function switchToAdmin() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

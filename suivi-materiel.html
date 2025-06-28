@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suivi Matériel et Salle</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="search-bar">
+                <input type="text" placeholder="Search">
+                <i class="fas fa-search"></i>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="suivi-materiel.html" class="active"><i class="fas fa-tools"></i> Suivi matériel et salle</a></li>
+                    <li><a href="alerte-accident.html"><i class="fas fa-exclamation-triangle"></i> Alerte accident</a></li>
+                    <li><a href="pointage-professeur.html"><i class="fas fa-user-check"></i> Pointage de professeur</a></li>
+                    <li><a href="inscription-eleves.html"><i class="fas fa-user-plus"></i> Inscription des élèves</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <div class="main-content">
+            <header class="header">
+                <button class="admin-btn" onclick="switchToAdmin()">
+                    <i class="fas fa-user-shield"></i> Superviseur
+                </button>
+            </header>
+            <main class="dashboard">
+                <div class="supervision-dashboard">
+                    <div class="materiel-container">
+                        <div class="materiel-list-section">
+                            <h2>Matériel Possédé</h2>
+                            <div class="materiel-table">      
+                                <div class="table-header">
+                                    <div class="col-nom">Nom</div>
+                                    <div class="col-nb">Nb</div>
+                                    <div class="col-action">Action</div>
+                                </div>
+                                <div class="table-body">
+                                    <div class="materiel-row" data-materiel="Serpière">
+                                        <div class="col-nom">Serpière</div>
+                                        <div class="col-nb">(5)</div>
+                                        <div class="col-action">
+                                            <button class="modify-btn" onclick="showModifyForm('Serpière')">
+                                                <i class="fas fa-edit"></i> Modifier état
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="materiel-row" data-materiel="Tatami">
+                                        <div class="col-nom">Tatami</div>
+                                        <div class="col-nb">(4)</div>
+                                        <div class="col-action">
+                                            <button class="modify-btn" onclick="showModifyForm('Tatami')">
+                                                <i class="fas fa-edit"></i> Modifier état
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="materiel-row" data-materiel="Haltères">
+                                        <div class="col-nom">Haltères</div>
+                                        <div class="col-nb">(12)</div>
+                                        <div class="col-action">
+                                            <button class="modify-btn" onclick="showModifyForm('Haltères')">
+                                                <i class="fas fa-edit"></i> Modifier état
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="materiel-row" data-materiel="Tapis de sol">
+                                        <div class="col-nom">Tapis de sol</div>
+                                        <div class="col-nb">(8)</div>
+                                        <div class="col-action">
+                                            <button class="modify-btn" onclick="showModifyForm('Tapis de sol')">
+                                                <i class="fas fa-edit"></i> Modifier état
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modify-form-section" id="modifyFormSection" style="display: none;">
+                            <h2>Modifier État du Matériel</h2>
+                            <form class="modify-form" id="modifyForm">
+                                <div class="form-group">
+                                    <label>Matériel</label>
+                                    <input type="text" id="materielName" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Date</label>
+                                    <input type="date" id="modifyDate" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>État</label>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-item">
+                                            <input type="radio" name="etat" value="tres-bon">
+                                            <span class="checkmark"></span>
+                                            Très bon
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="radio" name="etat" value="bon">
+                                            <span class="checkmark"></span>
+                                            Bon
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="radio" name="etat" value="mauvais">
+                                            <span class="checkmark"></span>
+                                            Mauvais
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Description (optionnel)</label>
+                                    <textarea id="description" placeholder="Détails sur l'état du matériel..."></textarea>
+                                </div>
+                                <button type="submit" class="validate-btn">Valider</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="maintenance-section">
+                        <h2>Retour Maintenance Salle</h2>
+                        <div class="maintenance-list" id="maintenanceList">
+                            <div class="maintenance-item">
+                                <input type="text" class="maintenance-input" placeholder="Écrire un retour" value="Mur fissuré">
+                                <button class="add-btn" onclick="addMaintenanceItem(this)">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <div class="maintenance-item">
+                                <input type="text" class="maintenance-input" placeholder="Écrire un retour" value="Toit qui coule">
+                                <button class="add-btn" onclick="addMaintenanceItem(this)">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Initialiser la date d'aujourd'hui
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('modifyDate').value = today;
+        });
+
+        // Afficher le formulaire de modification
+        function showModifyForm(materielName) {
+            document.getElementById('materielName').value = materielName;
+            document.getElementById('modifyFormSection').style.display = 'block';
+            
+            // Réinitialiser le formulaire
+            document.getElementById('modifyForm').reset();
+            document.getElementById('materielName').value = materielName;
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('modifyDate').value = today;
+        }
+
+        // Gérer la soumission du formulaire
+        document.getElementById('modifyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const materiel = document.getElementById('materielName').value;
+            const etat = document.querySelector('input[name="etat"]:checked')?.value;
+            const description = document.getElementById('description').value;
+            
+            if (!etat) {
+                alert('Veuillez sélectionner un état pour le matériel.');
+                return;
+            }
+            
+            // Simulation de sauvegarde
+            alert(`État du ${materiel} mis à jour vers "${etat.replace('-', ' ')}"${description ? '. Description: ' + description : ''}`);
+            
+            // Masquer le formulaire
+            document.getElementById('modifyFormSection').style.display = 'none';
+        });
+
+        // Ajouter un nouvel élément de maintenance
+        function addMaintenanceItem(button) {
+            const currentItem = button.parentElement;
+            const input = currentItem.querySelector('.maintenance-input');
+            
+            if (input.value.trim() === '') {                alert('Veuillez écrire un retour avant d\'ajouter une nouvelle ligne.');
+                return;
+            }
+            
+            // Désactiver le bouton actuel et changer l'icône
+            button.disabled = true;
+            button.innerHTML = '<i class="fas fa-check"></i>';
+            button.classList.add('completed');
+            
+            // Rendre l'input readonly
+            input.readOnly = true;
+            input.classList.add('completed');
+            
+            // Créer un nouvel élément
+            const newItem = document.createElement('div');
+            newItem.className = 'maintenance-item';
+            newItem.innerHTML = `
+                <input type="text" class="maintenance-input" placeholder="Écrire un retour">
+                <button class="add-btn" onclick="addMaintenanceItem(this)">
+                    <i class="fas fa-plus"></i>
+                </button>
+            `;
+            
+            // Ajouter le nouvel élément après l'élément actuel
+            currentItem.parentNode.insertBefore(newItem, currentItem.nextSibling);
+            
+            // Focus sur le nouvel input
+            newItem.querySelector('.maintenance-input').focus();
+        }        // Fonction pour basculer vers Admin
+        function switchToAdmin() {
+            // Rediriger vers la page principale (côté Admin)
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistique d'Abonnement</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="search-bar">
+                <input type="text" placeholder="Search">
+                <i class="fas fa-search"></i>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-chart-pie"></i> Statistique demographique</a></li>
+                    <li><a href="abonnement.html" class="active"><i class="fas fa-ticket-alt"></i> Statistique d'abonnement</a></li>
+                    <li><a href="presence.html"><i class="fas fa-check-circle"></i> Suivi de presence</a></li>
+                    <li><a href="personnel.html"><i class="fas fa-users"></i> Suivi de personnels</a></li>
+                    <li><a href="clubs.html"><i class="fas fa-sitemap"></i> Suivi de clubs et groupes</a></li>
+                    <li><a href="tarif.html"><i class="fas fa-tags"></i> Gestion tarifs</a></li>                    <li><a href="#"><i class="fas fa-calendar-alt"></i> Reservation</a></li>
+                    <li><a href="emploi-temps.html"><i class="fas fa-clock"></i> Emploi du temps</a></li>
+                    <li><a href="#"><i class="fas fa-list-alt"></i> Liste professeur/eleve + fiche individuelle</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <div class="main-content">            <header class="header">
+                <button class="admin-btn" onclick="switchToSupervisor()">
+                    <i class="fas fa-user-shield"></i> Admin
+                </button>
+            </header>
+            <main class="dashboard subscription-dashboard">
+                <div class="sub-header">
+                    <div class="total-clients-sub">
+                        Total client: <span>56</span>
+                    </div>
+                    <div class="filters">
+                        <button class="filter-btn"><i class="fas fa-filter"></i> Filtrer</button>
+                        <button class="filter-btn active"><i class="far fa-calendar-alt"></i> Ce mois</button>
+                    </div>
+                </div>
+                <div class="sub-stats-container">
+                    <div class="year-card">
+                        <i class="far fa-calendar-alt"></i> 2025
+                    </div>
+                    <div class="stat-card" id="reabonnement-card">
+                        <p>Total reabonnement:</p>
+                        <p class="stat-number">31</p>
+                    </div>
+                    <div class="stat-card" id="nouveau-card">
+                        <p>Total nouveau:</p>
+                        <p class="stat-number">26</p>
+                    </div>
+                    <div class="pie-chart-card">
+                        <canvas id="subPieChart"></canvas>
+                        <div class="pie-legend">
+                            <div class="pie-legend-item"><span></span>Reabonnement: 64%</div>
+                            <div class="pie-legend-item"><span></span>Nouveau: 46%</div>
+                        </div>
+                    </div>
+                    <div class="bar-chart-card">
+                        <canvas id="subBarChart"></canvas>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Pie Chart
+        const pieCtx = document.getElementById('subPieChart').getContext('2d');
+        new Chart(pieCtx, {
+            type: 'pie',
+            data: {
+                datasets: [{
+                    data: [64, 46],
+                    backgroundColor: ['#8a9fd1', '#586d9a'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        // Bar Chart
+        const barCtx = document.getElementById('subBarChart').getContext('2d');
+        new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai'],
+                datasets: [
+                    { label: 'Reabonnement', data: [28, 22, 45, 38, 18], backgroundColor: '#8a9fd1' },
+                    { label: 'Nouveau', data: [38, 15, 28, 10, 22], backgroundColor: '#586d9a' }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {                    legend: { position: 'top', align: 'end', labels: { color: '#e0e0e0', boxWidth: 15, padding: 20 } }
+                },
+                scales: {
+                    y: { beginAtZero: true, ticks: { color: '#e0e0e0' }, grid: { color: 'rgba(224, 224, 224, 0.2)' } },
+                    x: { ticks: { color: '#e0e0e0' }, grid: { display: false } }
+                }
+            }
+        });
+
+        // Fonction pour basculer vers Superviseur
+        function switchToSupervisor() {
+            window.location.href = 'suivi-materiel.html';
+        }
+    </script>
+</body>
+</html>

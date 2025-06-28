@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription des Élèves</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="search-bar">
+                <input type="text" placeholder="Search">
+                <i class="fas fa-search"></i>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="suivi-materiel.html"><i class="fas fa-tools"></i> Suivi matériel et salle</a></li>
+                    <li><a href="alerte-accident.html"><i class="fas fa-exclamation-triangle"></i> Alerte accident</a></li>
+                    <li><a href="pointage-professeur.html"><i class="fas fa-user-check"></i> Pointage de professeur</a></li>
+                    <li><a href="inscription-eleves.html" class="active"><i class="fas fa-user-plus"></i> Inscription des élèves</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <div class="main-content">
+            <header class="header">
+                <button class="admin-btn" onclick="switchToAdmin()">
+                    <i class="fas fa-user-shield"></i> Superviseur
+                </button>
+            </header>
+            <main class="dashboard">
+                <div class="inscription-dashboard">
+                    <h1 class="inscription-title">Inscription des Élèves</h1>
+                    
+                    <div class="inscription-form-container">
+                        <form class="inscription-form">
+                            <div class="form-section">
+                                <h2>Informations de l'élève</h2>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="nom">Nom</label>
+                                        <input type="text" id="nom" name="nom" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="prenom">Prénom</label>
+                                        <input type="text" id="prenom" name="prenom" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="date-naissance">Date de naissance</label>
+                                    <input type="date" id="date-naissance" name="date-naissance" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h2>Informations du père</h2>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="nom-pere">Nom</label>
+                                        <input type="text" id="nom-pere" name="nom-pere" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="prenom-pere">Prénom</label>
+                                        <input type="text" id="prenom-pere" name="prenom-pere" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-pere">Contact</label>
+                                    <input type="tel" id="contact-pere" name="contact-pere" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h2>Informations de la mère</h2>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="nom-mere">Nom</label>
+                                        <input type="text" id="nom-mere" name="nom-mere" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="prenom-mere">Prénom</label>
+                                        <input type="text" id="prenom-mere" name="prenom-mere" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-mere">Contact</label>
+                                    <input type="tel" id="contact-mere" name="contact-mere" required>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="inscription-submit-btn">Valider</button>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour basculer vers Admin
+        function switchToAdmin() {
+            window.location.href = 'index.html';
+        }
+        
+        // Gestion du formulaire d'inscription
+        document.querySelector('.inscription-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Récupération des données du formulaire
+            const nom = document.getElementById('nom').value;
+            const prenom = document.getElementById('prenom').value;
+            
+            // Vous pouvez ajouter ici le code pour envoyer les données à un serveur
+            
+            // Message de confirmation
+            alert(`L'inscription de ${prenom} ${nom} a bien été enregistrée.`);
+            
+            // Réinitialisation du formulaire
+            this.reset();
+        });
+    </script>
+</body>
+</html>

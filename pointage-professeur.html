@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pointage Professeur</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="search-bar">
+                <input type="text" placeholder="Search">
+                <i class="fas fa-search"></i>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="suivi-materiel.html"><i class="fas fa-tools"></i> Suivi matériel et salle</a></li>
+                    <li><a href="alerte-accident.html"><i class="fas fa-exclamation-triangle"></i> Alerte accident</a></li>
+                    <li><a href="pointage-professeur.html" class="active"><i class="fas fa-user-check"></i> Pointage de professeur</a></li>
+                    <li><a href="inscription-eleves.html"><i class="fas fa-user-plus"></i> Inscription des élèves</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <div class="main-content">
+            <header class="header">
+                <button class="admin-btn" onclick="switchToAdmin()">
+                    <i class="fas fa-user-shield"></i> Superviseur
+                </button>
+            </header>
+            <main class="dashboard">
+                <div class="pointage-dashboard">
+                    <div class="date-header">
+                        <h2 id="currentDate"></h2>
+                    </div>
+                    <div class="professeurs-container">
+                        <!-- Professeur 1 -->
+                        <div class="professeur-card">
+                            <h3>Mme Elie</h3>
+                            <div class="cours-list">
+                                <h4>Cours du jour</h4>
+                                <div class="cours-item">
+                                    <div class="cours-info">
+                                        <span class="cours-nom">Self Defense Avancé</span>
+                                        <span class="cours-heure">14:00 - 15:30</span>
+                                    </div>
+                                    <label class="pointage-checkbox">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="cours-item">
+                                    <div class="cours-info">
+                                        <span class="cours-nom">Cardio Training</span>
+                                        <span class="cours-heure">16:00 - 17:00</span>
+                                    </div>
+                                    <label class="pointage-checkbox">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Professeur 2 -->
+                        <div class="professeur-card">
+                            <h3>Mr Dupont</h3>
+                            <div class="cours-list">
+                                <h4>Cours du jour</h4>
+                                <div class="cours-item">
+                                    <div class="cours-info">
+                                        <span class="cours-nom">Self Defense Débutant</span>
+                                        <span class="cours-heure">10:00 - 11:30</span>
+                                    </div>
+                                    <label class="pointage-checkbox">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="cours-item">
+                                    <div class="cours-info">
+                                        <span class="cours-nom">Yoga</span>
+                                        <span class="cours-heure">11:30 - 12:30</span>
+                                    </div>
+                                    <label class="pointage-checkbox">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Afficher la date du jour
+        document.addEventListener('DOMContentLoaded', function() {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const today = new Date().toLocaleDateString('fr-FR', options);
+            document.getElementById('currentDate').textContent = today.charAt(0).toUpperCase() + today.slice(1);
+        });
+
+        // Fonction pour basculer vers Admin
+        function switchToAdmin() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

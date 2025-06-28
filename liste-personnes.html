@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste Professeur/Élève</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="liste-personnes-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar (même que dans les autres pages) -->
+        <aside class="sidebar">
+            <div class="search-bar">
+                <input type="text" placeholder="Search">
+                <i class="fas fa-search"></i>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-chart-pie"></i> Statistique demographique</a></li>
+                    <li><a href="abonnement.html"><i class="fas fa-ticket-alt"></i> Statistique d'abonnement</a></li>
+                    <li><a href="presence.html"><i class="fas fa-check-circle"></i> Suivi de presence</a></li>
+                    <li><a href="personnel.html"><i class="fas fa-users"></i> Suivi de personnels</a></li>
+                    <li><a href="clubs.html"><i class="fas fa-sitemap"></i> Suivi de clubs et groupes</a></li>
+                    <li><a href="tarif.html"><i class="fas fa-tags"></i> Gestion tarifs</a></li>
+                    <li><a href="#"><i class="fas fa-calendar-alt"></i> Reservation</a></li>
+                    <li><a href="emploi-temps.html"><i class="fas fa-clock"></i> Emploi du temps</a></li>
+                    <li><a href="liste-personnes.html" class="active"><i class="fas fa-list-alt"></i> Liste professeur/eleve</a></li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="header">
+                <button class="admin-btn" onclick="switchToSuperviseur()">
+                    <i class="fas fa-user-shield"></i> Admin
+                </button>
+            </header>
+            <main class="dashboard">
+                <div class="liste-personnes-dashboard">
+                    <h1>Liste des Personnes</h1>
+                    
+                    <!-- Section des boutons de type -->
+                    <div class="type-selector">
+                        <button class="type-btn active" data-type="eleve" onclick="switchType('eleve')">
+                            <i class="fas fa-user-graduate"></i> Élèves
+                        </button>
+                        <button class="type-btn" data-type="professeur" onclick="switchType('professeur')">
+                            <i class="fas fa-chalkboard-teacher"></i> Professeurs
+                        </button>
+                        <div class="search-section">
+                            <div class="search-input-container">
+                                <input type="text" id="searchInput" placeholder="Rechercher une personne..." oninput="searchPerson()">
+                                <i class="fas fa-search"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Container principal -->
+                    <div class="liste-container">
+                        <!-- Section Liste -->
+                        <div class="liste-section">
+                            <h2>Liste des <span id="typeTitle">Élèves</span></h2>
+                            <div class="liste-personnes" id="listePersonnes">
+                                <!-- Liste dynamique générée par JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <!-- Section Fiche individuelle -->
+                        <div class="fiche-section">
+                            <h2>Fiche Individuelle</h2>
+                            <div class="fiche-contenu" id="ficheContenu">
+                                <div class="fiche-placeholder" id="fichePlaceholder">
+                                    <i class="fas fa-user-circle"></i>
+                                    <p>Sélectionnez une personne pour afficher sa fiche</p>
+                                </div>
+                                <div class="fiche-details" id="ficheDetails" style="display: none;">
+                                    <div class="fiche-header">
+                                        <div class="fiche-photo">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="fiche-identite">
+                                            <h3 id="ficheNomPrenom">Nom Prénom</h3>
+                                            <p id="ficheStatut">Statut</p>
+                                        </div>
+                                    </div>
+                                    <div class="fiche-infos">
+                                        <div class="info-groupe">
+                                            <h4>Informations personnelles</h4>
+                                            <div class="info-ligne">
+                                                <span class="info-label">Date de naissance:</span>
+                                                <span class="info-value" id="ficheDateNaissance">-</span>
+                                            </div>
+                                            <div class="info-ligne">
+                                                <span class="info-label">Téléphone:</span>
+                                                <span class="info-value" id="ficheTelephone">-</span>
+                                            </div>
+                                            <div class="info-ligne">
+                                                <span class="info-label">Email:</span>
+                                                <span class="info-value" id="ficheEmail">-</span>
+                                            </div>
+                                            <div class="info-ligne">
+                                                <span class="info-label">Adresse:</span>
+                                                <span class="info-value" id="ficheAdresse">-</span>
+                                            </div>
+                                        </div>
+                                        <div class="info-groupe" id="infoParents" style="display: none;">
+                                            <h4>Informations parents</h4>
+                                            <div class="info-ligne">
+                                                <span class="info-label">Père:</span>
+                                                <span class="info-value" id="fichePere">-</span>
+                                            </div>
+                                            <div class="info-ligne">
+                                                <span class="info-label">Contact père:</span>
+                                                <span class="info-value" id="ficheContactPere">-</span>
+                                            </div>
+                                            <div class="info-ligne">
+                                                <span class="info-label">Mère:</span>
+                                                <span class="info-value" id="ficheMere">-</span>
+                                            </div>
+                                            <div class="info-ligne">
+                                                <span class="info-label">Contact mère:</span>
+                                                <span class="info-value" id="ficheContactMere">-</span>
+                                            </div>
+                                        </div>
+                                        <div class="info-groupe" id="infoCours">
+                                            <h4>Cours</h4>
+                                            <ul class="liste-cours" id="listeCours">
+                                                <!-- Liste des cours générée par JavaScript -->
+                                            </ul>
+                                        </div>
+                                        <div class="fiche-actions">
+                                            <button class="action-btn edit-btn">
+                                                <i class="fas fa-edit"></i> Modifier
+                                            </button>
+                                            <button class="action-btn delete-btn">
+                                                <i class="fas fa-trash"></i> Supprimer
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Données simulées
+        const personnesData = {
+            eleve: [
+                { 
+                    id: "e1", 
+                    nom: "Dubois", 
+                    prenom: "Emma", 
+                    dateNaissance: "15/08/2012",
+                    telephone: "0601020304",
+                    email: "emma.dubois@email.com",
+                    adresse: "12 rue des Lilas, 75001 Paris",
+                    pere: "Dubois Thomas",
+                    contactPere: "0607080910",
+                    mere: "Dubois Marie",
+                    contactMere: "0611121314",
+                    cours: ["Karaté Débutant", "Yoga Junior"]
+                },
+                { 
+                    id: "e2", 
+                    nom: "Martin", 
+                    prenom: "Lucas", 
+                    dateNaissance: "22/05/2010",
+                    telephone: "0701020304",
+                    email: "lucas.martin@email.com",
+                    adresse: "45 avenue Victor Hugo, 75016 Paris",
+                    pere: "Martin Philippe",
+                    contactPere: "0723242526",
+                    mere: "Martin Sophie",
+                    contactMere: "0727282930",
+                    cours: ["Self Defense Avancé", "Boxe Junior"]
+                },
+                { 
+                    id: "e3", 
+                    nom: "Bernard", 
+                    prenom: "Chloé", 
+                    dateNaissance: "03/11/2011",
+                    telephone: "0601234567",
+                    email: "chloe.bernard@email.com",
+                    adresse: "8 rue du Commerce, 75015 Paris",
+                    pere: "Bernard Alain",
+                    contactPere: "0612345678",
+                    mere: "Bernard Nathalie",
+                    contactMere: "0634567890",
+                    cours: ["Judo Intermédiaire"]
+                }
+            ],
+            professeur: [
+                { 
+                    id: "p1", 
+                    nom: "Leroy", 
+                    prenom: "Antoine", 
+                    dateNaissance: "12/04/1985",
+                    telephone: "0701234567",
+                    email: "antoine.leroy@email.com",
+                    adresse: "23 rue de la Paix, 75002 Paris",
+                    cours: ["Karaté Débutant", "Karaté Avancé", "Self Defense Avancé"]
+                },
+                { 
+                    id: "p2", 
+                    nom: "Moreau", 
+                    prenom: "Sophie", 
+                    dateNaissance: "28/09/1978",
+                    telephone: "0712345678",
+                    email: "sophie.moreau@email.com",
+                    adresse: "15 boulevard Haussmann, 75009 Paris",
+                    cours: ["Yoga Junior", "Yoga Adulte", "Pilates"]
+                },
+                { 
+                    id: "p3", 
+                    nom: "Petit", 
+                    prenom: "Thomas", 
+                    dateNaissance: "05/06/1990",
+                    telephone: "0723456789",
+                    email: "thomas.petit@email.com",
+                    adresse: "7 avenue Montaigne, 75008 Paris",
+                    cours: ["Boxe Junior", "Boxe Adulte", "Judo Intermédiaire"]
+                }
+            ]
+        };
+
+        let currentType = 'eleve';
+        let currentSearch = '';
+
+        // Initialiser la page au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            updateList();
+        });
+
+        // Fonction pour changer de type (élève/professeur)
+        function switchType(type) {
+            currentType = type;
+            
+            // Mettre à jour les boutons
+            document.querySelectorAll('.type-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-type="${type}"]`).classList.add('active');
+            
+            // Mettre à jour le titre
+            document.getElementById('typeTitle').textContent = type === 'eleve' ? 'Élèves' : 'Professeurs';
+            
+            // Réinitialiser la recherche et mettre à jour la liste
+            document.getElementById('searchInput').value = '';
+            currentSearch = '';
+            updateList();
+            
+            // Masquer la fiche détaillée
+            document.getElementById('ficheDetails').style.display = 'none';
+            document.getElementById('fichePlaceholder').style.display = 'flex';
+            
+            // Afficher/masquer la section parents
+            if (type === 'eleve') {
+                document.getElementById('infoParents').style.display = 'block';
+            } else {
+                document.getElementById('infoParents').style.display = 'none';
+            }
+        }
+
+        // Fonction de recherche
+        function searchPerson() {
+            currentSearch = document.getElementById('searchInput').value.toLowerCase();
+            updateList();
+        }
+
+        // Fonction pour mettre à jour la liste
+        function updateList() {
+            const listeElement = document.getElementById('listePersonnes');
+            listeElement.innerHTML = '';
+            
+            const personnes = personnesData[currentType];
+            let results = personnes;
+            
+            if (currentSearch) {
+                results = personnes.filter(personne => 
+                    personne.nom.toLowerCase().includes(currentSearch) || 
+                    personne.prenom.toLowerCase().includes(currentSearch)
+                );
+            }
+            
+            if (results.length === 0) {
+                listeElement.innerHTML = '<div class="no-results">Aucune personne trouvée</div>';
+                return;
+            }
+            
+            results.forEach(personne => {
+                const personneItem = document.createElement('div');
+                personneItem.className = 'personne-item';
+                personneItem.onclick = () => afficherFiche(personne);
+                
+                personneItem.innerHTML = `
+                    <div class="personne-icon">
+                        <i class="fas fa-${currentType === 'eleve' ? 'user-graduate' : 'chalkboard-teacher'}"></i>
+                    </div>
+                    <div class="personne-info">
+                        <h3>${personne.prenom} ${personne.nom}</h3>
+                        <p>${personne.cours[0]}${personne.cours.length > 1 ? ' +' + (personne.cours.length - 1) : ''}</p>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                `;
+                
+                listeElement.appendChild(personneItem);
+            });
+        }
+
+        // Fonction pour afficher la fiche d'une personne
+        function afficherFiche(personne) {
+            document.getElementById('fichePlaceholder').style.display = 'none';
+            document.getElementById('ficheDetails').style.display = 'block';
+            
+            // Mettre en surbrillance l'élément sélectionné
+            document.querySelectorAll('.personne-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            
+            // Remplir les informations
+            document.getElementById('ficheNomPrenom').textContent = `${personne.prenom} ${personne.nom}`;
+            document.getElementById('ficheStatut').textContent = currentType === 'eleve' ? 'Élève' : 'Professeur';
+            document.getElementById('ficheDateNaissance').textContent = personne.dateNaissance;
+            document.getElementById('ficheTelephone').textContent = personne.telephone;
+            document.getElementById('ficheEmail').textContent = personne.email;
+            document.getElementById('ficheAdresse').textContent = personne.adresse;
+            
+            // Remplir les informations des parents (pour les élèves)
+            const parentsSection = document.getElementById('infoParents');
+            if (currentType === 'eleve') {
+                parentsSection.style.display = 'block';
+                document.getElementById('fichePere').textContent = personne.pere;
+                document.getElementById('ficheContactPere').textContent = personne.contactPere;
+                document.getElementById('ficheMere').textContent = personne.mere;
+                document.getElementById('ficheContactMere').textContent = personne.contactMere;
+            } else {
+                parentsSection.style.display = 'none';
+            }
+            
+            // Remplir la liste des cours
+            const listeCoursElement = document.getElementById('listeCours');
+            listeCoursElement.innerHTML = '';
+            
+            personne.cours.forEach(cours => {
+                const coursItem = document.createElement('li');
+                coursItem.textContent = cours;
+                listeCoursElement.appendChild(coursItem);
+            });
+        }
+
+        // Fonction pour basculer vers Superviseur
+        function switchToSuperviseur() {
+            window.location.href = 'suivi-materiel.html';
+        }
+    </script>
+</body>
+</html>

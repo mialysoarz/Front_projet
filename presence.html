@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suivi de Présence</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="search-bar">
+                <input type="text" placeholder="Search">
+                <i class="fas fa-search"></i>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-chart-pie"></i> Statistique demographique</a></li>
+                    <li><a href="abonnement.html"><i class="fas fa-ticket-alt"></i> Statistique d'abonnement</a></li>
+                    <li><a href="presence.html" class="active"><i class="fas fa-check-circle"></i> Suivi de presence</a></li>
+                    <li><a href="personnel.html"><i class="fas fa-users"></i> Suivi de personnels</a></li>
+                    <li><a href="clubs.html"><i class="fas fa-sitemap"></i> Suivi de clubs et groupes</a></li>
+                    <li><a href="tarif.html"><i class="fas fa-tags"></i> Gestion tarifs</a></li>                    <li><a href="#"><i class="fas fa-calendar-alt"></i> Reservation</a></li>
+                    <li><a href="emploi-temps.html"><i class="fas fa-clock"></i> Emploi du temps</a></li>
+                    <li><a href="#"><i class="fas fa-list-alt"></i> Liste professeur/eleve + fiche individuelle</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <div class="main-content">
+            <header class="header">
+                <button class="admin-btn" onclick="switchToSupervisor()"><i class="fas fa-user-shield"></i> Admin</button>
+            </header>
+            <main class="dashboard">
+                <div class="presence-dashboard">
+                    <!-- Header avec choix du type -->
+                    <div class="presence-header">
+                        <div class="presence-title">
+                            <h2>Suivi de Présence</h2>
+                        </div>                        <div class="user-type-selector">
+                            <button class="user-type-btn active" data-type="eleve">
+                                <i class="fas fa-user-graduate"></i>
+                                Élève
+                            </button>
+                            <button class="user-type-btn" data-type="professeur">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                                Professeur
+                            </button>
+                            <button class="user-type-btn" data-type="superviseur">
+                                <i class="fas fa-user-tie"></i>
+                                Superviseur
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Filtres de date -->
+                    <div class="date-filters">
+                        <div class="date-filter-group">
+                            <label for="date-debut">Date début :</label>
+                            <input type="date" id="date-debut" value="2025-06-01">
+                        </div>
+                        <div class="date-filter-group">
+                            <label for="date-fin">Date fin :</label>
+                            <input type="date" id="date-fin" value="2025-06-24">
+                        </div>
+                        <button class="filter-apply-btn">
+                            <i class="fas fa-search"></i>
+                            Appliquer
+                        </button>
+                    </div>
+
+                    <!-- Contenu principal -->
+                    <div class="presence-content">
+                        <!-- Liste des personnes -->
+                        <div class="people-list">                            <div class="list-header">
+                                <h3 id="list-title">Liste des Élèves</h3>
+                                <div class="total-count">
+                                    <span id="total-people">12</span> personnes
+                                </div>
+                            </div>
+                            <div class="people-items">
+                                <div class="person-item active" data-id="1">
+                                    <div class="person-info">
+                                        <div class="person-name">Marie Dubois</div>
+                                        <div class="person-class">Niveau: Ceinture verte</div>
+                                    </div>
+                                    <div class="absence-count">
+                                        <span class="absence-number">5</span>
+                                        <span class="absence-label">absences</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="person-item" data-id="2">
+                                    <div class="person-info">
+                                        <div class="person-name">Jean Martin</div>
+                                        <div class="person-class">Niveau: Ceinture bleue</div>
+                                    </div>
+                                    <div class="absence-count">
+                                        <span class="absence-number">2</span>
+                                        <span class="absence-label">absences</span>
+                                    </div>
+                                </div>
+
+                                <div class="person-item" data-id="3">
+                                    <div class="person-info">
+                                        <div class="person-name">Sophie Leroux</div>
+                                        <div class="person-class">Niveau: Ceinture jaune</div>
+                                    </div>
+                                    <div class="absence-count">
+                                        <span class="absence-number">8</span>
+                                        <span class="absence-label">absences</span>
+                                    </div>
+                                </div>
+
+                                <div class="person-item" data-id="4">
+                                    <div class="person-info">
+                                        <div class="person-name">Pierre Durand</div>
+                                        <div class="person-class">Niveau: Ceinture orange</div>
+                                    </div>
+                                    <div class="absence-count">
+                                        <span class="absence-number">1</span>
+                                        <span class="absence-label">absence</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Détails de la personne sélectionnée -->
+                        <div class="person-details">
+                            <div class="details-header">
+                                <h3>Détails de présence</h3>
+                                <div class="selected-person-name">Marie Dubois</div>
+                            </div>
+                            
+                            <div class="details-content">                                <!-- Pour les élèves -->
+                                <div class="detail-section eleve-details">
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-calendar-times"></i>
+                                            Jours d'absence
+                                        </div>
+                                        <div class="detail-value">
+                                            <div class="absence-date">15 Juin 2025</div>
+                                            <div class="absence-date">18 Juin 2025</div>
+                                            <div class="absence-date">20 Juin 2025</div>
+                                            <div class="absence-date">22 Juin 2025</div>
+                                            <div class="absence-date">23 Juin 2025</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-fist-raised"></i>
+                                            Cours ratés
+                                        </div>
+                                        <div class="detail-value">
+                                            <div class="missed-course">Self Defense - 15/06</div>
+                                            <div class="missed-course">Judo - 18/06</div>
+                                            <div class="missed-course">Aikido - 20/06</div>
+                                            <div class="missed-course">Jujitsu - 22/06</div>
+                                            <div class="missed-course">Self Defense - 23/06</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-medal"></i>
+                                            Disciplines manquées
+                                        </div>
+                                        <div class="detail-value">
+                                            <div class="missed-subject">Self Defense (2 cours)</div>
+                                            <div class="missed-subject">Judo (1 cours)</div>
+                                            <div class="missed-subject">Aikido (1 cours)</div>
+                                            <div class="missed-subject">Jujitsu (1 cours)</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-user-ninja"></i>
+                                            Instructeurs concernés
+                                        </div>
+                                        <div class="detail-value">
+                                            <div class="teacher-name">Sensei Tanaka - Judo</div>
+                                            <div class="teacher-name">Maître Rodriguez - Self Defense</div>
+                                            <div class="teacher-name">Sensei Yamamoto - Aikido</div>
+                                            <div class="teacher-name">Professeur Silva - Jujitsu</div>
+                                        </div>
+                                    </div>
+                                </div>                                <!-- Pour les professeurs -->
+                                <div class="detail-section professeur-details" style="display: none;">
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-calendar-times"></i>
+                                            Jours d'absence
+                                        </div>
+                                        <div class="detail-value">
+                                            <div class="absence-date">16 Juin 2025</div>
+                                            <div class="absence-date">19 Juin 2025</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-fist-raised"></i>
+                                            Cours non assurés
+                                        </div>
+                                        <div class="detail-value">
+                                            <div class="missed-course">Judo Avancé - 16/06</div>
+                                            <div class="missed-course">Self Defense Débutant - 19/06</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-users"></i>
+                                            Groupes affectés
+                                        </div>
+                                        <div class="detail-value">
+                                            <div class="affected-class">Judo Avancé (15 élèves)</div>
+                                            <div class="affected-class">Self Defense Débutant (12 élèves)</div>
+                                        </div>
+                                    </div>
+                                </div>                                <!-- Pour les superviseurs -->
+                                <div class="detail-section superviseur-details" style="display: none;">
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-calendar-times"></i>
+                                            Jours d'absence
+                                        </div>
+                                        <div class="detail-value">
+                                            <div class="absence-date">17 Juin 2025</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-eye"></i>
+                                            Supervisions manquées
+                                        </div>
+                                        <div class="detail-value">
+                                            <div class="missed-supervision">Surveillance dojo principal - 17/06</div>
+                                            <div class="missed-supervision">Supervision échauffement - 17/06</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Gestion des boutons de type d'utilisateur
+        const userTypeBtns = document.querySelectorAll('.user-type-btn');
+        const listTitle = document.getElementById('list-title');
+        const peopleItems = document.querySelector('.people-items');
+        const detailSections = document.querySelectorAll('.detail-section');
+
+        userTypeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Retirer la classe active de tous les boutons
+                userTypeBtns.forEach(b => b.classList.remove('active'));
+                // Ajouter la classe active au bouton cliqué
+                btn.classList.add('active');
+                
+                const type = btn.dataset.type;
+                updateListForType(type);
+                updateDetailsForType(type);
+            });
+        });
+
+        function updateListForType(type) {
+            switch(type) {
+                case 'eleve':
+                    listTitle.textContent = 'Liste des Élèves';
+                    break;
+                case 'professeur':
+                    listTitle.textContent = 'Liste des Professeurs';
+                    break;
+                case 'superviseur':
+                    listTitle.textContent = 'Liste des Superviseurs';
+                    break;
+            }
+        }
+
+        function updateDetailsForType(type) {
+            detailSections.forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            const activeSection = document.querySelector(`.${type}-details`);
+            if (activeSection) {
+                activeSection.style.display = 'block';
+            }
+        }
+
+        // Gestion de la sélection des personnes
+        const personItems = document.querySelectorAll('.person-item');
+        const selectedPersonName = document.querySelector('.selected-person-name');
+
+        personItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // Retirer la classe active de tous les items
+                personItems.forEach(i => i.classList.remove('active'));
+                // Ajouter la classe active à l'item cliqué
+                item.classList.add('active');                
+                // Mettre à jour le nom dans les détails
+                const personName = item.querySelector('.person-name').textContent;
+                selectedPersonName.textContent = personName;
+            });
+        });
+
+        // Fonction pour basculer vers Superviseur
+        function switchToSupervisor() {
+            window.location.href = 'suivi-materiel.html';
+        }
+    </script>
+</body>
+</html>

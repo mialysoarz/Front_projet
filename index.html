@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistique Démographique</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="search-bar">
+                <input type="text" placeholder="Search">
+                <i class="fas fa-search"></i>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="index.html" class="active"><i class="fas fa-chart-pie"></i> Statistique demographique</a></li>
+                    <li><a href="abonnement.html"><i class="fas fa-ticket-alt"></i> Statistique d'abonnement</a></li>
+                    <li><a href="presence.html"><i class="fas fa-check-circle"></i> Suivi de presence</a></li>
+                    <li><a href="personnel.html"><i class="fas fa-users"></i> Suivi de personnels</a></li>
+                    <li><a href="clubs.html"><i class="fas fa-sitemap"></i> Suivi de clubs et groupes</a></li>
+                    <li><a href="tarif.html"><i class="fas fa-tags"></i> Gestion tarifs</a></li>
+                    <li><a href="#"><i class="fas fa-calendar-alt"></i> Reservation</a></li>
+                    <li><a href="emploi-temps.html"><i class="fas fa-clock"></i> Emploi du temps</a></li>
+                    <li><a href="liste-personnes.html"><i class="fas fa-list-alt"></i> Liste professeur/eleve</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <div class="main-content">            <header class="header">
+                <button class="admin-btn" onclick="switchToSupervisor()">
+                    <i class="fas fa-user-shield"></i> Admin
+                </button>
+            </header>
+            <main class="dashboard">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="total-clients">
+                            <span>56</span>
+                            Total client
+                        </div>
+                        <div class="chart-switcher">
+                            <button id="barBtn" class="active">Bar</button>
+                            <button id="lineBtn">Line</button>
+                            <button id="doughnutBtn">Doughnut</button>
+                        </div>
+                        <div class="date-range">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Jun 17, 2024</span>
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Jun 22, 2025</span>
+                        </div>
+                        <div class="legend" id="main-legend">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: var(--accent-color-2);"></div>
+                                <span>Homme</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: var(--accent-color-1);"></div>
+                                <span>Femme</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-area" id="bar-line-chart-area">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                    <div class="doughnut-layout" id="doughnut-chart-section" style="display: none;">
+                        <div class="doughnut-chart-area">
+                            <canvas id="doughnutChartCanvas"></canvas>
+                        </div>
+                        <div class="stats-bars">
+                            <div class="stat-item">
+                                <div class="stat-item-header">
+                                    <div class="stat-item-legend">
+                                        <div class="legend-color" style="background-color: #4db6ac;"></div>
+                                        <span>Homme</span>
+                                        <span>20-60ans</span>
+                                    </div>
+                                    <span>22%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 22%; background-color: #4db6ac;"></div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-item-header">
+                                    <div class="stat-item-legend">
+                                        <div class="legend-color" style="background-color: #80deea;"></div>
+                                        <span>Femme</span>
+                                        <span>20-50ans</span>
+                                    </div>
+                                    <span>71%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 71%; background-color: #80deea;"></div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-item-header">
+                                    <div class="stat-item-legend">
+                                        <div class="legend-color" style="background-color: #a7c5c6;"></div>
+                                        <span>Enfants</span>
+                                        <span>5-10ans</span>
+                                    </div>
+                                    <span>17%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 17%; background-color: #a7c5c6;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const barLineCtx = document.getElementById('myChart').getContext('2d');
+        const doughnutCtx = document.getElementById('doughnutChartCanvas').getContext('2d');
+        let myChart;
+
+        const barData = {
+            labels: ['10-12', '16-18', '20-30', '30-40', '40-60'],
+            datasets: [{
+                label: 'Femme',
+                data: [28, 12, 20, 25, 15],
+                backgroundColor: '#4db6ac'
+            }, {
+                label: 'Homme',
+                data: [20, 15, 35, 8, 12],
+                backgroundColor: '#80deea'
+            }]
+        };
+
+        const lineData = {
+            labels: ['10-12', '16-18', '20-30', '30-40', '40-60'],
+            datasets: [{
+                label: 'Femme',
+                data: [5, 15, 25, 20, 8],
+                borderColor: '#4db6ac',
+                backgroundColor: 'transparent',
+                tension: 0.4
+            }, {
+                label: 'Homme',
+                data: [18, 40, 15, 28, 10],
+                borderColor: '#80deea',
+                backgroundColor: 'transparent',
+                tension: 0.4
+            }]
+        };
+
+        const doughnutData = {
+            labels: ['Homme', 'Femme', 'Enfants'],
+            datasets: [{
+                data: [22, 71, 17],
+                backgroundColor: ['#4db6ac', '#80deea', '#a7c5c6'],
+                borderWidth: 0,
+                cutout: '70%'
+            }]
+        };
+
+        const commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#e0e0e0' },
+                    grid: { color: '#5a6e7e' }
+                },
+                x: {
+                    ticks: { color: '#e0e0e0' },
+                    grid: { display: false }
+                }
+            }
+        };
+        
+        function createChart(type, data) {
+            if (myChart) {
+                myChart.destroy();
+            }
+            document.getElementById('bar-line-chart-area').style.display = 'flex';
+            document.getElementById('doughnut-chart-section').style.display = 'none';
+            document.getElementById('main-legend').style.display = 'flex';
+
+            myChart = new Chart(barLineCtx, { type, data, options: commonOptions });
+        }
+
+        function createDoughnutChart() {
+            if (myChart) {
+                myChart.destroy();
+            }
+            document.getElementById('bar-line-chart-area').style.display = 'none';
+            document.getElementById('doughnut-chart-section').style.display = 'flex';
+            document.getElementById('main-legend').style.display = 'none';
+            
+            myChart = new Chart(doughnutCtx, {
+                type: 'doughnut',
+                data: doughnutData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        document.getElementById('barBtn').addEventListener('click', () => {
+            createChart('bar', barData);
+            setActiveButton('barBtn');
+        });
+        document.getElementById('lineBtn').addEventListener('click', () => {
+            createChart('line', lineData);
+            setActiveButton('lineBtn');        });
+        document.getElementById('doughnutBtn').addEventListener('click', () => {
+            createDoughnutChart();
+            setActiveButton('doughnutBtn');
+        });
+
+        function setActiveButton(btnId) {
+            ['barBtn', 'lineBtn', 'doughnutBtn'].forEach(id => {
+                document.getElementById(id).classList.remove('active');
+            });
+            document.getElementById(btnId).classList.add('active');
+        }
+
+        // Fonction pour basculer vers Superviseur
+        function switchToSupervisor() {
+            // Rediriger vers la page superviseur
+            window.location.href = 'suivi-materiel.html';
+        }
+
+        // Initial chart
+        createChart('bar', barData);
+    </script>
+</body>
+</html>
